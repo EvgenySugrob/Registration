@@ -1,0 +1,248 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище Model" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Dolznost">
+          <Key>
+            <PropertyRef Name="KodeDolznosty" />
+          </Key>
+          <Property Name="KodeDolznosty" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Dolznosty" Type="varchar" MaxLength="80" />
+        </EntityType>
+        <EntityType Name="Persona">
+          <Key>
+            <PropertyRef Name="KodPerson" />
+          </Key>
+          <Property Name="KodPerson" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KodPolzovately" Type="int" />
+          <Property Name="LoginPolzovately" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="Dolznost" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="FIO" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="DataRozdeniy" Type="date" Nullable="false" />
+          <Property Name="NomerTelephona" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="80" />
+          <Property Name="Pol" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="Photo" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Polzovatel">
+          <Key>
+            <PropertyRef Name="CodePolzovately" />
+          </Key>
+          <Property Name="CodePolzovately" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Login" Type="varchar" MaxLength="80" />
+          <Property Name="Parol" Type="varchar" MaxLength="80" />
+          <Property Name="KodeDolznosty" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_Persona_Polzovatel">
+          <End Role="Polzovatel" Type="Self.Polzovatel" Multiplicity="0..1" />
+          <End Role="Persona" Type="Self.Persona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Polzovatel">
+              <PropertyRef Name="CodePolzovately" />
+            </Principal>
+            <Dependent Role="Persona">
+              <PropertyRef Name="KodPolzovately" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Polzovatel_Dolznost">
+          <End Role="Dolznost" Type="Self.Dolznost" Multiplicity="0..1" />
+          <End Role="Polzovatel" Type="Self.Polzovatel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dolznost">
+              <PropertyRef Name="KodeDolznosty" />
+            </Principal>
+            <Dependent Role="Polzovatel">
+              <PropertyRef Name="KodeDolznosty" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище ModelContainer">
+          <EntitySet Name="Dolznost" EntityType="Self.Dolznost" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Persona" EntityType="Self.Persona" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Polzovatel" EntityType="Self.Polzovatel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Persona_Polzovatel" Association="Self.FK_Persona_Polzovatel">
+            <End Role="Polzovatel" EntitySet="Polzovatel" />
+            <End Role="Persona" EntitySet="Persona" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Polzovatel_Dolznost" Association="Self.FK_Polzovatel_Dolznost">
+            <End Role="Dolznost" EntitySet="Dolznost" />
+            <End Role="Polzovatel" EntitySet="Polzovatel" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Dolznost">
+          <Key>
+            <PropertyRef Name="KodeDolznosty" />
+          </Key>
+          <Property Name="KodeDolznosty" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Dolznosty" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Polzovatel" Relationship="Self.FK_Polzovatel_Dolznost" FromRole="Dolznost" ToRole="Polzovatel" />
+        </EntityType>
+        <EntityType Name="Persona">
+          <Key>
+            <PropertyRef Name="KodPerson" />
+          </Key>
+          <Property Name="KodPerson" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KodPolzovately" Type="Int32" />
+          <Property Name="LoginPolzovately" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Dolznost" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FIO" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DataRozdeniy" Type="DateTime" Precision="0" Nullable="false" />
+          <Property Name="NomerTelephona" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="Pol" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Polzovatel" Relationship="Self.FK_Persona_Polzovatel" FromRole="Persona" ToRole="Polzovatel" />
+          <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Polzovatel">
+          <Key>
+            <PropertyRef Name="CodePolzovately" />
+          </Key>
+          <Property Name="CodePolzovately" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Login" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="Parol" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="KodeDolznosty" Type="Int32" />
+          <NavigationProperty Name="Dolznost" Relationship="Self.FK_Polzovatel_Dolznost" FromRole="Polzovatel" ToRole="Dolznost" />
+          <NavigationProperty Name="Persona" Relationship="Self.FK_Persona_Polzovatel" FromRole="Polzovatel" ToRole="Persona" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_Polzovatel_Dolznost">
+          <End Role="Dolznost" Type="Self.Dolznost" Multiplicity="0..1" />
+          <End Role="Polzovatel" Type="Self.Polzovatel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dolznost">
+              <PropertyRef Name="KodeDolznosty" />
+            </Principal>
+            <Dependent Role="Polzovatel">
+              <PropertyRef Name="KodeDolznosty" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Persona_Polzovatel">
+          <End Role="Polzovatel" Type="Self.Polzovatel" Multiplicity="0..1" />
+          <End Role="Persona" Type="Self.Persona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Polzovatel">
+              <PropertyRef Name="CodePolzovately" />
+            </Principal>
+            <Dependent Role="Persona">
+              <PropertyRef Name="KodPolzovately" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Dolznost" EntityType="Self.Dolznost" />
+          <EntitySet Name="Persona" EntityType="Self.Persona" />
+          <EntitySet Name="Polzovatel" EntityType="Self.Polzovatel" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK_Polzovatel_Dolznost" Association="Self.FK_Polzovatel_Dolznost">
+            <End Role="Dolznost" EntitySet="Dolznost" />
+            <End Role="Polzovatel" EntitySet="Polzovatel" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Persona_Polzovatel" Association="Self.FK_Persona_Polzovatel">
+            <End Role="Polzovatel" EntitySet="Polzovatel" />
+            <End Role="Persona" EntitySet="Persona" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище ModelContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Dolznost">
+            <EntityTypeMapping TypeName="Model.Dolznost">
+              <MappingFragment StoreEntitySet="Dolznost">
+                <ScalarProperty Name="KodeDolznosty" ColumnName="KodeDolznosty" />
+                <ScalarProperty Name="Dolznosty" ColumnName="Dolznosty" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Persona">
+            <EntityTypeMapping TypeName="Model.Persona">
+              <MappingFragment StoreEntitySet="Persona">
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="KodPerson" ColumnName="KodPerson" />
+                <ScalarProperty Name="KodPolzovately" ColumnName="KodPolzovately" />
+                <ScalarProperty Name="LoginPolzovately" ColumnName="LoginPolzovately" />
+                <ScalarProperty Name="Dolznost" ColumnName="Dolznost" />
+                <ScalarProperty Name="FIO" ColumnName="FIO" />
+                <ScalarProperty Name="DataRozdeniy" ColumnName="DataRozdeniy" />
+                <ScalarProperty Name="NomerTelephona" ColumnName="NomerTelephona" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Pol" ColumnName="Pol" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Polzovatel">
+            <EntityTypeMapping TypeName="Model.Polzovatel">
+              <MappingFragment StoreEntitySet="Polzovatel">
+                <ScalarProperty Name="CodePolzovately" ColumnName="CodePolzovately" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Parol" ColumnName="Parol" />
+                <ScalarProperty Name="KodeDolznosty" ColumnName="KodeDolznosty" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="Model.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
